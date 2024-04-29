@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -17,6 +18,13 @@ export class InfraStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'), // reference to the service the IAM role is used for
     });
     iamBalanceStatusRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'));
+
+    const lambdaFunction = new lambda.Function(this, 'lambdafunctionlogicalid', {
+      handler: 'function.handler',
+      runtime: lambda.Runtime.NODEJS_16_X,
+      code: lambda.Code.fromAsset('../services'),
+      role: iamBalanceStatusRole
+    });
 
   }
 }
