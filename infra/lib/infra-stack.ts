@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -25,6 +26,15 @@ export class InfraStack extends cdk.Stack {
       code: lambda.Code.fromAsset('../services'),
       role: iamBalanceStatusRole
     });
+
+    const bankingRestApi = new apigateway.LambdaRestApi(this, 'bankingrestapilogicalId', {
+      handler: lambdaFunction,
+      restApiName: 'bankingrestapi',
+      deploy: true,
+      proxy: false,
+    });
+    const bankStatus = bankingRestApi.root.addResource('bankstatus');
+    bankStatus.addMethod('GET');
 
   }
 }
