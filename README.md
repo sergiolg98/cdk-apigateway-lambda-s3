@@ -15,4 +15,9 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `npx cdk diff`    compare deployed stack with current state
 * `npx cdk synth`   emits the synthesized CloudFormation template
 
-![Simple Cloud Architecture](https://ibb.co/F3vpxGt)
+## Cloud Architeture
+
+The project will create a simple architecture in which a JSON file will be stored in an S3 Bucket and it will be retrieved by a lambda function invoked by AWS API Gateway.
+
+![Simple Cloud Architecture](https://i.ibb.co/C8dL1xF/AWS-Diagrams-1.png)
+
